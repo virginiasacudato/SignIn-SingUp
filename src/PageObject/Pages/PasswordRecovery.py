@@ -1,11 +1,5 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 import time
-import names
-import random
 
 
 class PasswordRecovery:
@@ -38,6 +32,7 @@ class PasswordRecovery:
 
         self.get_inpt_email().send_keys(str(first_line))
         self.get_btn_recovery().click()
+        time.sleep(6)
 
 
 

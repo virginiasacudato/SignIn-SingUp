@@ -1,8 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 import time
 import names
 import random
@@ -123,6 +121,7 @@ class Home:
         f.write(fake_email + '\n')
         f.write(fake_pass)
         f.close()
+
     def ingresar_fake_email(self):
         window_before = self.driver.window_handles[0]
         self.driver.switch_to.window(window_before)
