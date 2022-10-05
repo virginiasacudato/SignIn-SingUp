@@ -39,9 +39,12 @@ class RestablecerPassword:
         self.messages = '//*[@id="navbarNav"]/ul[1]/li[4]/a'
         self.gen_pass_msg = '/html/body/div[1]/div/div[3]/div/table/tbody/tr[1]/td[2]/a'
         self.iframe = '//*[@id="message"]/iframe'
-        self.link = '/html/body/div[2]/a'
+        self.link = 'a'
         self.fake_email = '/html/body/div[1]/div/div[2]/div/table/tbody/tr[2]/td/code'
         self.fake_pass = '/html/body/div[1]/div/div[2]/div/table/tbody/tr[3]/td/code'
+        self.btn_create_account = '//*[@id="create-form"]/div/div/div[2]/h1/button'
+        self.save_changes = '//*[@id="modalNuevoEmpleado"]/div[2]/div/div[3]/button[2]'
+        self.h1_pass = '/html/body/main/section/div[2]/h1'
 
     # --Get Elements --
 
@@ -95,7 +98,7 @@ class RestablecerPassword:
         return self.driver.find_element(By.XPATH, self.iframe)
 
     def get_link_msg(self):
-        return self.driver.find_element(By.XPATH, self.link)
+        return self.driver.find_element(By.CSS_SELECTOR, self.link)
 
     def get_msg_email(self):
         return self.driver.find_element(By.XPATH, self.gen_pass_msg)
@@ -105,6 +108,15 @@ class RestablecerPassword:
 
     def get_fake_pass(self):
         return self.driver.find_element(By.XPATH, self.fake_pass)
+
+    def get_create_email(self):
+        return self.driver.find_element(By.XPATH, self.btn_create_account)
+
+    def get_btn_save_changes(self):
+        return self.driver.find_element(By.XPATH, self.save_changes)
+
+    def get_h1_pass(self):
+        return self.driver.find_element(By.XPATH, self.h1_pass)
 
     # -- Actions --
     def eth_session(self):
@@ -118,6 +130,7 @@ class RestablecerPassword:
         window_after = self.driver.window_handles[1]
         self.driver.switch_to.window(window_after)
         time.sleep(2)
+        self.get_create_email().click()
         fake_email = self.get_fake_email().text
         fake_pass = self.get_fake_pass().text
         # self.get_ethereal_log().click()
@@ -142,8 +155,9 @@ class RestablecerPassword:
     def volver_emp(self):
         window_before = self.driver.window_handles[0]
         self.driver.switch_to.window(window_before)
-        self.get_email_emp().send_keys(fake_pass)
-
+        self.get_email_emp().clear()
+        self.get_email_emp().send_keys(fake_email)
+        self.get_btn_save_changes().click()
         #window_before = self.driver.window_handles[0]
         #self.driver.switch_to.window(window_before)
         #time.sleep(3)
@@ -160,3 +174,12 @@ class RestablecerPassword:
         bandeja_entrada = self.get_msg_email()
         bandeja_entrada.click()
         time.sleep(3)
+        self.driver.switch_to.frame(self.get_iframe())
+        self.get_link_msg().click()
+        title = self.get_h1_pass().text
+        if title == 'Elija una contraseña':
+            print("Coincide.")
+            assert True
+        else:
+            assert False
+
