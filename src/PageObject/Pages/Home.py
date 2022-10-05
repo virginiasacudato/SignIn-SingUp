@@ -4,7 +4,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 import time
 import names
 import random
+import re
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
+dotenv_path = join(dirname(__file__), 'C:/Users/Maynar/Desktop/SignIn-SingUp/.env')
+load_dotenv(dotenv_path)
+
+# Environment Variables
+
+PASSWORD = os.getenv('PASSWORD')
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
 
 class Home:
 
@@ -30,6 +42,14 @@ class Home:
         self.btn_registrar = 'btnIngresar'
         self.modal_text = '//*[@id="modal-procesar-respuesta"]/div[2]/div/div[1]/h4'
         self.btn_entendido = '//*[@id="modal-procesar-respuesta"]/div[2]/div/div[3]/button'
+        self.inpt_pass_emp = '//*[@id="Pass"]'
+        self.inpt_repeat_pass = '//*[@id="PassConfirm"]'
+        self.activate = '//*[@id="botonLogin"]'
+        # Check login
+        self.user = 'Usuario'
+        self.password = 'Password'
+        self.btn_ingresar = 'btnIngresar'
+        self.name_corp = '/html/body/main/aside/section/div/div[2]/div/a'
 
     # -- Get Elements --
     def get_body(self):
@@ -85,6 +105,28 @@ class Home:
     def get_msg_email(self):
         return self.driver.find_element(By.XPATH, self.gen_pass_msg)
 
+    def get_inpt_pass(self):
+        return self.driver.find_element(By.XPATH, self.inpt_pass_emp)
+
+    def get_repeat_pass(self):
+        return self.driver.find_element(By.XPATH, self.inpt_repeat_pass)
+
+    def get_activate(self):
+        return self.driver.find_element(By.XPATH, self.activate)
+
+# Check login
+    def get_user(self):
+        return self.driver.find_element(By.ID, self.user)
+
+    def get_password(self):
+        return self.driver.find_element(By.ID, self.password)
+
+    def get_btn_ingreso(self):
+        return self.driver.find_element(By.ID, self.btn_ingresar)
+
+    def get_name_corp(self):
+        return self.driver.find_element(By.XPATH, self.name_corp)
+
     # -- Actions --
 
     def registro_emp(self):
@@ -93,11 +135,18 @@ class Home:
         # Acceder al email fake
         # Ir al email
         # Cambiar a la pestaña dirigida
-        # Activar cuenta ¿?
+        # Activar cuenta
+        #def execute_script():
+        #    result = self.driver.execute_script('return document.querySelector("#Nombre").value')
+        #    value = result.text
+        #    return value
         self.get_signup().click()
         time.sleep(2)
         # Data Random
-        self.get_razon_social().send_keys(names.get_first_name())
+        global random_name
+        random_name = names.get_first_name()
+        self.get_razon_social().send_keys(random_name)
+        #print(execute_script())
         self.get_n_id().send_keys(str(random.randint(20000000000, 30000000000)))
 
     def ethereal_fake_identity(self):
@@ -159,6 +208,35 @@ class Home:
     def acces_email(self):
         self.get_msg_email().click()
         self.driver.switch_to.frame(self.get_iframe())
+        print("En el frame!!!!")
         time.sleep(2)
         self.get_link_msg().click()
         time.sleep(5)
+
+    def set_pass(self):
+        self.get_inpt_pass().send_keys(PASSWORD)
+        self.get_repeat_pass().send_keys(PASSWORD)
+        self.get_activate().click()
+
+    def back_to_login(self):
+
+        self.get_user().send_keys(fake_email)
+        self.get_password().send_keys(PASSWORD)
+        self.get_btn_ingreso().click()
+        name_inicio = self.get_name_corp().text
+        print("Random name es esto --> ", random_name)
+        if name_inicio == random_name:
+            print('Test exitoso')
+            assert True
+        else:
+            print('Test Fallido')
+            assert False
+
+
+
+
+    # SEGURIDAD PASSWORD
+    ## |1 MAYUS
+    ## 1 MINUSCULA
+    # 1 NUMERO
+    # 8 MINIMA

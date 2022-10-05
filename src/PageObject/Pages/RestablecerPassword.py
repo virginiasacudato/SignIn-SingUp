@@ -40,6 +40,8 @@ class RestablecerPassword:
         self.gen_pass_msg = '/html/body/div[1]/div/div[3]/div/table/tbody/tr[1]/td[2]/a'
         self.iframe = '//*[@id="message"]/iframe'
         self.link = '/html/body/div[2]/a'
+        self.fake_email = '/html/body/div[1]/div/div[2]/div/table/tbody/tr[2]/td/code'
+        self.fake_pass = '/html/body/div[1]/div/div[2]/div/table/tbody/tr[3]/td/code'
 
     # --Get Elements --
 
@@ -98,7 +100,31 @@ class RestablecerPassword:
     def get_msg_email(self):
         return self.driver.find_element(By.XPATH, self.gen_pass_msg)
 
+    def get_fake_email(self):
+        return self.driver.find_element(By.XPATH, self.fake_email)
+
+    def get_fake_pass(self):
+        return self.driver.find_element(By.XPATH, self.fake_pass)
+
     # -- Actions --
+    def eth_session(self):
+        global fake_email
+        global fake_pass
+        # email_corp = self.get_email_emp().get_attribute('value')
+        # print(email_corp)
+        time.sleep(5)
+        link = "https://ethereal.email/"
+        self.driver.execute_script("window.open('{}');".format(link))
+        window_after = self.driver.window_handles[1]
+        self.driver.switch_to.window(window_after)
+        time.sleep(2)
+        fake_email = self.get_fake_email().text
+        fake_pass = self.get_fake_pass().text
+        # self.get_ethereal_log().click()
+        # self.get_inpt_log().send_keys(str(email_corp))
+        # self.get_inpt_pass().send_keys(str(FAKE_PASS))
+        # self.get_btn_login().click()
+        time.sleep(6)
 
     def login_adm(self):
         self.driver.get(BASE_URL)
@@ -113,28 +139,17 @@ class RestablecerPassword:
         edit[1].click()
         time.sleep(2)
 
-    def eth_session(self):
-        email_corp = self.get_email_emp().get_attribute('value')
-        print(email_corp)
-        time.sleep(5)
-        link = "https://ethereal.email/"
-        self.driver.execute_script("window.open('{}');".format(link))
-        window_after = self.driver.window_handles[1]
-        self.driver.switch_to.window(window_after)
-        time.sleep(2)
-        self.get_ethereal_log().click()
-        self.get_inpt_log().send_keys(str(email_corp))
-        self.get_inpt_pass().send_keys(str(FAKE_PASS))
-        self.get_btn_login().click()
-        time.sleep(6)
-
     def volver_emp(self):
         window_before = self.driver.window_handles[0]
         self.driver.switch_to.window(window_before)
-        time.sleep(3)
-        self.get_cloud().click()
-        self.get_reset_password().click()
-        self.get_confirm().click()
+        self.get_email_emp().send_keys(fake_pass)
+
+        #window_before = self.driver.window_handles[0]
+        #self.driver.switch_to.window(window_before)
+        #time.sleep(3)
+        #self.get_cloud().click()
+        #self.get_reset_password().click()
+        #self.get_confirm().click()
 
     def eth_gen_pass(self):
         window_after = self.driver.window_handles[1]
@@ -145,5 +160,3 @@ class RestablecerPassword:
         bandeja_entrada = self.get_msg_email()
         bandeja_entrada.click()
         time.sleep(3)
-
-
