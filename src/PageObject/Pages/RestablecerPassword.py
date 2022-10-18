@@ -178,7 +178,7 @@ class RestablecerPassword:
         self.get_link_msg().click()
         title = self.get_h1_pass().text
         if title == 'Elija una contraseña':
-            print("Coincide.")
+            print("Restablecer la contraseña del empleado realizado correctamente. Test exitoso.")
             assert True
         else:
             assert False

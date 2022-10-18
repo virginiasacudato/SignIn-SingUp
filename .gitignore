@@ -2,3 +2,7 @@
 /chromedriver.exe
 /.pytest_cache
 /base.txt
+/nodemailer/package.json
+/nodemailer/.env
+/nodemailer/node_modules
+/nodemailer/package-lock.json

@@ -4,7 +4,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 import time
 import names
 import random
-import re
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -17,6 +16,9 @@ load_dotenv(dotenv_path)
 PASSWORD = os.getenv('PASSWORD')
 USER = os.getenv('USER')
 PASSWORD = os.getenv('PASSWORD')
+
+random_pass = os.getenv('RANDOM_PASS')
+
 
 class Home:
 
@@ -114,7 +116,7 @@ class Home:
     def get_activate(self):
         return self.driver.find_element(By.XPATH, self.activate)
 
-# Check login
+    # Check login
     def get_user(self):
         return self.driver.find_element(By.ID, self.user)
 
@@ -136,7 +138,7 @@ class Home:
         # Ir al email
         # Cambiar a la pestaña dirigida
         # Activar cuenta
-        #def execute_script():
+        # def execute_script():
         #    result = self.driver.execute_script('return document.querySelector("#Nombre").value')
         #    value = result.text
         #    return value
@@ -145,8 +147,8 @@ class Home:
         # Data Random
         global random_name
         random_name = names.get_first_name()
-        self.get_razon_social().send_keys(random_name)
-        #print(execute_script())
+        self.get_razon_social().send_keys("MayTest"+random_name)
+        # print(execute_script())
         self.get_n_id().send_keys(str(random.randint(20000000000, 30000000000)))
 
     def ethereal_fake_identity(self):
@@ -162,9 +164,9 @@ class Home:
         time.sleep(1)
         # Save data
         fake_email = self.get_fake_email().text
-        print(fake_email)
+        #print(fake_email)
         fake_pass = self.get_fake_pass().text
-        print(fake_pass)
+        #print(fake_pass)
         time.sleep(3)
         f = open("base.txt", "w")
         f.write(fake_email + '\n')
@@ -182,9 +184,7 @@ class Home:
         self.get_btn_accept().click()
         time.sleep(1)
         self.get_btn_registrar().click()
-        time.sleep(5)
-        msg_modal = self.get_modal_exitoso().text
-        self.get_entendido().click()
+        time.sleep(10)
         # if msg_modal == 'Operación Exitosa':
         #    assert True
         # else:
@@ -202,38 +202,37 @@ class Home:
         if bandeja_entrada == 'Generar Contraseña de empresa':
             assert True
         else:
-            print(bandeja_entrada)
+            #print(bandeja_entrada)
             assert False
 
     def acces_email(self):
         self.get_msg_email().click()
         self.driver.switch_to.frame(self.get_iframe())
-        print("En el frame!!!!")
+        #print("En el frame!!!!")
         time.sleep(2)
         self.get_link_msg().click()
         time.sleep(5)
 
     def set_pass(self):
-        self.get_inpt_pass().send_keys(PASSWORD)
-        self.get_repeat_pass().send_keys(PASSWORD)
+        self.get_inpt_pass().send_keys(random_pass)
+        self.get_repeat_pass().send_keys(random_pass)
         self.get_activate().click()
 
     def back_to_login(self):
 
         self.get_user().send_keys(fake_email)
-        self.get_password().send_keys(PASSWORD)
+        self.get_password().send_keys(random_pass)
         self.get_btn_ingreso().click()
         name_inicio = self.get_name_corp().text
-        print("Random name es esto --> ", random_name)
-        if name_inicio == random_name:
-            print('Test exitoso')
+        #print("El nombre del inicio es esto --> ", name_inicio)
+        #print("Random name es esto --> ", random_name)
+        ref_random_name = "MayTest"+random_name
+        if name_inicio == ref_random_name:
+            print('Empresa dada de alta correctamente. Test Exitoso.')
             assert True
         else:
-            print('Test Fallido')
+            #print('Test Fallido')
             assert False
-
-
-
 
     # SEGURIDAD PASSWORD
     ## |1 MAYUS

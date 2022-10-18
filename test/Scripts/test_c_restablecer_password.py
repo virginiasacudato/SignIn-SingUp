@@ -5,7 +5,7 @@ import time
 
 class TestRestablecerPassword(WebDriverSetup):
 
-## RESTABLECER PASSWORD DESDE EL ADMINISTRADOR
+    ## RESTABLECER PASSWORD DESDE EL ADMINISTRADOR
     def test_a_restablecer_pass(self):
         driver = self.driver
         rest_pass = RestablecerPassword(driver)

@@ -13,6 +13,7 @@ USER = os.getenv('USER')
 PASSWORD = os.getenv('PASSWORD')
 BASE_URL = os.getenv('URL')
 
+# Run python -m pytest --html=report-unido.html --self-contained-html
 
 class WebDriverSetup(unittest.TestCase):
     def setUp(self):

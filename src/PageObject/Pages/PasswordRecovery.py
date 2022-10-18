@@ -12,7 +12,7 @@ load_dotenv(dotenv_path)
 # Environment Variables
 PASSWORD = os.getenv('PASSWORD')
 BASE_URL = os.getenv('URL')
-
+RANDOM_PASS = os.getenv('RANDOM_PASS')
 
 class PasswordRecovery:
 
@@ -35,7 +35,6 @@ class PasswordRecovery:
         # Ethereal
         self.btn_create_account = '//*[@id="create-form"]/div/div/div[2]/h1/button'
         self.fake_email = '/html/body/div[1]/div/div[2]/div/table/tbody/tr[2]/td/code'
-        self.entendido = '//*[@id="modal-procesar-respuesta"]/div[2]/div/div[3]/button'
         self.messages = '//*[@id="navbarNav"]/ul[1]/li[4]/a'
         self.gen_pass_msg = '/html/body/div[1]/div/div[3]/div/table/tbody/tr[1]/td[2]/a'
         self.iframe = '//*[@id="message"]/iframe'
@@ -92,9 +91,6 @@ class PasswordRecovery:
     def get_btn_save_changes(self):
         return self.driver.find_element(By.XPATH, self.save_changes)
 
-    def get_entendido(self):
-        return self.driver.find_element(By.XPATH, self.entendido)
-
     def get_messages(self):
         return self.driver.find_element(By.XPATH, self.messages)
 
@@ -136,7 +132,7 @@ class PasswordRecovery:
             first_line = file.readline()
 
         self.get_inpt_email().send_keys(str(first_line))
-        self.get_inpt_pass().send_keys(str(PASSWORD))
+        self.get_inpt_pass().send_keys(str(RANDOM_PASS))
         self.get_btn_recovery().click()
         time.sleep(3)
         self.get_administracion().click()
@@ -162,8 +158,8 @@ class PasswordRecovery:
         time.sleep(1)
         fake_email = self.get_fake_email().text
         fake_password = self.get_fake_pass().text
-        print(fake_email)
-        print(fake_password)
+        #print(fake_email)
+        #print(fake_password)
 
     def ingresar_fake_email_employ(self):
         self.change_window(0)
@@ -173,7 +169,6 @@ class PasswordRecovery:
         self.get_email_emp().send_keys(fake_email)
         self.get_btn_save_changes().click()
         time.sleep(3)
-        self.get_entendido().click()
 
     def alta_employee(self):
         self.change_window(1)
@@ -183,11 +178,11 @@ class PasswordRecovery:
         self.get_messages().click()
         self.get_msg_email().click()
         self.driver.switch_to.frame(self.get_iframe())
-        print("En el frame!!!!")
+        #print("En el frame!!!!")
         self.get_link_msg().click()
         time.sleep(5)
-        self.get_pass_employee().send_keys(PASSWORD)
-        self.get_repeat_pass().send_keys(PASSWORD)
+        self.get_pass_employee().send_keys(RANDOM_PASS)
+        self.get_repeat_pass().send_keys(RANDOM_PASS)
         self.get_activate().click()
         time.sleep(2)
 
@@ -208,7 +203,7 @@ class PasswordRecovery:
             self.get_link_msg().click()
             title = self.get_h1_pass().text
             if title == 'Elija una contraseña':
-                print("Coincide.")
+                print("Recuperación de contraseña correctamente realizada. Test exitoso")
                 assert True
         except:
             assert False
