@@ -15,14 +15,8 @@
 <!-- ABOUT THE PROJECT -->
 ## Acerca del proyecto
 
-Con este proyecto se busca automatizar pruebas para el módulo Legajo Digital.
+Con este proyecto se busca automatizar el proceso para el alta de empresa, alta de usuarios y recuperación de contraseña.
 A continuación un detalle de los casos de prueba que realiza:
-
-*Prerequisito: Tener creado una cantidad de empleados con los permisos necesarios*
-
-**1. Test Suite - SignUp**
-
-
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
